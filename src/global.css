@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  @apply text-white;
+  @apply bg-neutral-950;
+}
+
+@layer components {
+  .scroll-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scroll-none::-webkit-scrollbar {
+    display: none;
+  }
+}
