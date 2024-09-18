@@ -15,6 +15,7 @@ type Props = {
 export const TrackLayers: React.FC<Props> = ({ timeline }) => {
   const ref = useRef<HTMLDivElement>(null);
   const header = useRef<HTMLDivElement>(null);
+  const translate = useRef(0);
   const [scale, setScale] = useState(2);
   const player = useAtomValue(RemotionAtom);
 
@@ -35,6 +36,7 @@ export const TrackLayers: React.FC<Props> = ({ timeline }) => {
       const scrollX = target.scrollLeft;
 
       if (ref.current) {
+        translate.current = scrollX;
         ref.current.style.transform = `translateX(-${scrollX}px)`;
       }
     },
@@ -52,7 +54,7 @@ export const TrackLayers: React.FC<Props> = ({ timeline }) => {
         if (!isDragging) return;
 
         const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
-        const x = e.clientX - Math.floor(rect.left);
+        const x = e.clientX - Math.floor(rect.left) + translate.current;
         const frame = position2frame(x, scale);
 
         player?.seekTo(frame);
