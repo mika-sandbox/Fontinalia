@@ -111,7 +111,7 @@ const frame2pixel = (frame: number, scale: number): number => {
 const position2frame = (x: number, scale: number): number => {
   const val = x / UNIT_PIXEL[scale];
 
-  return val;
+  return Math.floor(val);
 };
 
 const drawRuler = (scale: number) => {
@@ -142,4 +142,4 @@ const drawFrameLine = (scale: number) => {
   };
 };
 
-export { drawRulerLine as drawRuler, drawFrameLine, frame2pixel };
+export { drawRulerLine as drawRuler, drawFrameLine, frame2pixel, position2frame };
