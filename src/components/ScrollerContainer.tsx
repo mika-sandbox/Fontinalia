@@ -18,7 +18,7 @@ export const ScrollContainer = React.forwardRef<HTMLDivElement, Props>((props, r
 
   return (
     <div
-      className={cn(["indiana-scroll-container"])}
+      className={cn(["indiana-scroll-container", "indiana-scroll-container--hide-scrollbars"])}
       ref={(w) => {
         if (w) {
           scrollContainer.ref(w);
