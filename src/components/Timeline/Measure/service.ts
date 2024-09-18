@@ -104,7 +104,12 @@ const UNIT_PIXEL: Record<number, number> = {
 
 const frame2pixel = (frame: number, scale: number): number => {
   const val = frame * UNIT_PIXEL[scale];
-  console.log({ frame: frame + 1, scale, val, s: frame / 30 });
+
+  return val;
+};
+
+const position2frame = (x: number, scale: number): number => {
+  const val = x / UNIT_PIXEL[scale];
 
   return val;
 };
@@ -132,9 +137,9 @@ const drawFrameLine = (scale: number) => {
     ctx.beginPath();
     ctx.moveTo(pixel, 0);
     ctx.lineTo(pixel, 9999);
-    ctx.strokeStyle = "#7f1d1d";
+    ctx.strokeStyle = "#dc2626";
     ctx.stroke();
   };
 };
 
-export { drawRulerLine as drawRuler, drawFrameLine };
+export { drawRulerLine as drawRuler, drawFrameLine, frame2pixel };

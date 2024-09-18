@@ -1,16 +1,17 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
 import { TimelineController } from "./TimelineController";
 import { Layer } from "./Layer";
+import { frame2pixel } from "./Measure/service";
 import { Measure } from "./Measure";
+import { ScrollContainer } from "../ScrollerContainer";
 
 type Props = {
   timeline: TimelineController;
 };
 
 export const TrackLayers: React.FC<Props> = ({ timeline }) => {
-  const layerRef = useRef<HTMLDivElement>(null);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(2);
 
   const onMouseWheel = useCallback((e: React.WheelEvent) => {
@@ -24,22 +25,33 @@ export const TrackLayers: React.FC<Props> = ({ timeline }) => {
     }
   }, []);
 
-  useEffect(() => {}, []);
+  const onScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      const target = e.currentTarget;
+      const scrollX = target.scrollLeft;
+
+      if (ref.current) {
+        ref.current.style.transform = `translateX(-${scrollX}px)`;
+      }
+    },
+    [timeline],
+  );
 
   const frames = 1800; // 30s
   const fps = 60;
+  const pixel = useMemo(() => frame2pixel(timeline.totalFrames, scale) + 100, [scale, timeline.totalFrames]);
 
   return (
     <ScrollSync>
       <div className="relative w-full h-full grid grid-rows-[48px_1fr] grid-cols-[160px_1fr] overflow-hidden">
-        <div />
+        <div className="z-10 bg-neutral-900 border-r-2 border-neutral-700" />
         <div onWheel={onMouseWheel} />
         <ScrollSyncPane>
-          <div className="relative w-full h-auto overflow-scroll scroll-none">
+          <div className="relative z-10 w-full h-auto bg-neutral-900 overflow-auto scroll-none">
             {timeline.layers.map((layer) => (
               <div
                 key={layer.name}
-                className="flex items-center justify-center w-40 h-16 bg-neutral-900 border-b border-r-2 border-neutral-800 select-none"
+                className="flex items-center justify-center w-40 h-16 border-b border-r-2 border-neutral-700 select-none"
               >
                 {layer.name}
               </div>
@@ -47,16 +59,25 @@ export const TrackLayers: React.FC<Props> = ({ timeline }) => {
           </div>
         </ScrollSyncPane>
         <ScrollSyncPane>
-          <div className="relative w-full h-auto overflow-scroll bg-neutral-900 border-b border-neutral-800">
-            {timeline.layers.map((layer, i) => (
-              <Layer layer={layer} frames={frames} fps={fps} key={layer.name} className="h-16" ref={layerRef} />
-            ))}
-          </div>
+          <ScrollContainer onScroll={onScroll}>
+            <div
+              className="relative w-full h-auto overflow-x-scroll bg-neutral-900 scroll-none"
+              style={{ minWidth: `${pixel}px` }}
+            >
+              {timeline.layers.map((layer, i) => (
+                <div key={layer.name} className="h-16 border-b border-neutral-700 select-none">
+                  <Layer layer={layer} frames={frames} fps={fps} key={layer.name} className="h-16" />
+                </div>
+              ))}
+            </div>
+          </ScrollContainer>
         </ScrollSyncPane>
-        <div ref={rootRef} className="absolute inset-0 z-10 col-start-2 pointer-events-none">
-          {layerRef.current && rootRef.current && (
-            <Measure scale={scale} height={rootRef.current.clientHeight} width={layerRef.current.clientWidth} />
-          )}
+        <div
+          ref={ref}
+          className="absolute top-0 bottom-0 col-start-2 pointer-events-none"
+          style={{ width: `${pixel}px`, transform: `translateX(-)` }}
+        >
+          {ref.current && <Measure scale={scale} height={ref.current.clientHeight} width={pixel} />}
         </div>
       </div>
     </ScrollSync>
