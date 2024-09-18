@@ -67,7 +67,7 @@ const App = () => {
       },
       position: { referencePanel: "compositions", direction: "right" },
       minimumHeight: 200,
-      minimumWidth: 200,
+      minimumWidth: 600,
       priority: LayoutPriority.High,
     });
 
