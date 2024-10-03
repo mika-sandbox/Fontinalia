@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  GridviewApi,
   GridviewReact,
   GridviewReadyEvent,
   IGridviewPanelProps,
@@ -9,7 +10,7 @@ import {
   SerializedGridviewComponent,
 } from "dockview";
 import "dockview/dist/styles/dockview.css";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Player } from "./Player";
 import { Compositions } from "./Composition";
 import { Timeline } from "./Timeline";
@@ -32,10 +33,13 @@ import { Menubar } from "./Window/Menubar";
 // +---------------------------------------------+------------+
 const App = () => {
   const { value: layout, set } = useLocalStorage<SerializedGridviewComponent>("layout");
+  const api = useRef<GridviewApi>();
   const setTimeline = useSetAtom(TimelineAtom);
 
   const onReady = useCallback(
     (e: GridviewReadyEvent) => {
+      api.current = e.api;
+
       e.api.onDidLayoutChange(() => {
         console.log("layout changed");
         set(e.api.toJSON());
@@ -98,16 +102,21 @@ const App = () => {
     setTimeline(new TimelineController());
   }, []);
 
+  useEffect(() => {
+    const onResize = () => api.current?.layout(window.innerWidth, window.innerHeight - 38, true);
+
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
   return (
-    <div
-      className="h-screen max-h-screen w-full grid grid-rows-[36px_1fr] bg-neutral-950 text-neutral-50"
-      style={{ flexGrow: 1 }}
-    >
+    <div className="h-screen w-full grid grid-rows-[36px_1fr] bg-neutral-950 text-neutral-50" style={{ flexGrow: 1 }}>
       <Menubar />
       <div>
         <GridviewReact
           onReady={onReady}
-          proportionalLayout
           orientation={Orientation.VERTICAL}
           className="dockview-theme-abyss h-[calc(100vh-36px)]"
           components={{
