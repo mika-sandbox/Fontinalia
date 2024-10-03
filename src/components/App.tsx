@@ -17,6 +17,7 @@ import { useSetAtom } from "jotai";
 import { TimelineAtom } from "../states/timeline";
 import { TimelineController } from "./Timeline/TimelineController";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { Menubar } from "./Window/Menubar";
 
 // +-------------+-------------------------------+------------+
 // |             |                               |            |
@@ -98,13 +99,17 @@ const App = () => {
   }, []);
 
   return (
-    <div className="h-screen w-full bg-neutral-950 text-white" style={{ flexGrow: 1 }}>
-      {
+    <div
+      className="h-screen max-h-screen w-full grid grid-rows-[36px_1fr] bg-neutral-950 text-neutral-50"
+      style={{ flexGrow: 1 }}
+    >
+      <Menubar />
+      <div>
         <GridviewReact
           onReady={onReady}
           proportionalLayout
           orientation={Orientation.VERTICAL}
-          className="dockview-theme-abyss"
+          className="dockview-theme-abyss h-[calc(100vh-36px)]"
           components={{
             default: (props: IGridviewPanelProps<{ title: string }>) => {
               return <div style={{ padding: "20px", color: "white" }}>{props.params.title}</div>;
@@ -114,7 +119,7 @@ const App = () => {
             timeline: Timeline,
           }}
         />
-      }
+      </div>
     </div>
   );
 };

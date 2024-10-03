@@ -84,7 +84,7 @@ const Controller: React.FC<Props> = memo(({ onToggleRepeat }) => {
   }, [isRepeating, controller]);
 
   return (
-    <div className="flex flex-row gap-x-8 items-center justify-center h-12 border-t border-[#2b2b4a]">
+    <div className="flex flex-row gap-x-8 items-center justify-center h-12 border-t border-neutral-800">
       <div className="flex flex-row gap-x-2">
         <button>
           <FontAwesomeIcon fixedWidth icon={faBackwardFast} />

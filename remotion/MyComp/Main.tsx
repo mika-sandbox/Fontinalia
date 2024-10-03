@@ -1,10 +1,13 @@
 import { z } from "zod";
 import {
   AbsoluteFill,
+  OffthreadVideo,
   Sequence,
   spring,
+  staticFile,
   useCurrentFrame,
   useVideoConfig,
+  Video,
 } from "remotion";
 import { CompositionProps } from "../../types/constants";
 import { NextLogo } from "./NextLogo";
@@ -34,13 +37,14 @@ export const Main = ({ title }: z.infer<typeof CompositionProps>) => {
 
   return (
     <AbsoluteFill className="bg-white">
+      <Video src={staticFile("Detroit-Part3-Raw.mp4")} className="z-10" />
       <Sequence durationInFrames={transitionStart + transitionDuration}>
         <Rings outProgress={logoOut}></Rings>
         <AbsoluteFill className="justify-center items-center">
           <NextLogo outProgress={logoOut}></NextLogo>
         </AbsoluteFill>
       </Sequence>
-      <Sequence from={transitionStart + transitionDuration / 2}>
+      <Sequence from={transitionStart + transitionDuration / 2} className="z-20">
         <TextFade>
           <h1
             className="text-[70px] font-bold"

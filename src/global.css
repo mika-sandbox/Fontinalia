@@ -8,6 +8,14 @@ body {
   @apply bg-neutral-950;
 }
 
+.dockview-theme-abyss  {
+  --dv-separator-border: #262626 ;
+}
+
+.split-view-container.separator-border .view:not(:first-child)::before {
+  z-index: 1;
+}
+
 @layer components {
   .scroll-none {
     -ms-overflow-style: none;
