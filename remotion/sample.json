@@ -1,0 +1,48 @@
+{
+  "metadata": {
+    "title": "Detroit:Become Human Part3"
+  },
+  "composition": {
+    "layers": [
+      {
+        "items": [
+          {
+            "type": "references/video",
+            "path": "Detroit-Part3-Raw.mp4",
+            "start": 0,
+            "length": -1,
+            "metadata": {
+              "name": "Detroit-Part3-Raw",
+              "length": 0
+            }
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "type": "references/audio",
+            "path": "0_お久しぶりですこんに….wav",
+            "start": 0,
+            "length": -1,
+            "metadata": {
+              "name": "0_お久しぶりですこんに…",
+              "length": 0
+            }
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "type": "text",
+            "content": "お久しぶりですこんにちは、結月ゆかりさんだよ。",
+            "start": 0,
+            "length": 95,
+            "metadata": {}
+          }
+        ]
+      }
+    ]
+  }
+}
