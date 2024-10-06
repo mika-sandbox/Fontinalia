@@ -5,10 +5,13 @@ import { Separator } from "./Separator";
 import { SubMenu } from "./SubMenu";
 
 const Menubar = () => {
+  const onOpenProject = () => {};
+
   return (
     <MB.Root className="flex bg-neutral-950 text-neutral-400 px-2 py-1 border-b-2 h-9 border-neutral-800">
       <MenubarItem name="File">
         <MenuItem name="New Project" />
+        <MenuItem name="Open Project" onClick={onOpenProject} />
         <MenuItem name="Open Recent Project" />
         <MenuItem name="Close Project" disabled />
         <Separator />

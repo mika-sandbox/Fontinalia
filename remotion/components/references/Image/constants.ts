@@ -5,7 +5,5 @@ export const ImageReferenceProps = z.object({
   path: z.string(),
   start: z.number().positive(),
   length: z.number(),
-  metadata: z.object({
-    length: z.number().positive(),
-  }),
+  metadata: z.object({}),
 });

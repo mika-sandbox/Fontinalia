@@ -1,13 +1,16 @@
 import { PlayerRef, Player as RemotionPlayer } from "@remotion/player";
-import { useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-import { Main } from "../../../remotion/MyComp/Main";
 import { Controller } from "./Controller";
 import { RemotionAtom } from "../../states/remotion";
+import { JsonComposition } from "../../../remotion/components/metadata/Composition";
+import { TimelineAtom } from "../../states/timeline";
+import { DEFAULT_PROJECT } from "../../constants";
 
 const Player: React.FC = () => {
   const ref = useRef<PlayerRef>(null);
+  const timeline = useAtomValue(TimelineAtom);
   const setRemotion = useSetAtom(RemotionAtom);
   const [isRepeating, setIsRepeating] = useState(false);
   const onToggleRepeat = useCallback((isRepeating: boolean) => {
@@ -20,17 +23,19 @@ const Player: React.FC = () => {
     }
   }, [setRemotion]);
 
+  const json = timeline?.toJSON() ?? DEFAULT_PROJECT;
+
   return (
     <div className="h-full flex flex-col">
       <div className="h-full w-full">
         <RemotionPlayer
           ref={ref}
-          component={Main}
-          inputProps={{ title: "Hello, World!" }}
-          durationInFrames={400}
-          fps={60}
-          compositionHeight={1080}
-          compositionWidth={1920}
+          component={JsonComposition}
+          inputProps={json}
+          durationInFrames={json.metadata.length}
+          fps={json.metadata.rendering.framerate}
+          compositionHeight={json.metadata.rendering.height}
+          compositionWidth={json.metadata.rendering.width}
           style={{ width: "100%", height: "100%" }}
           doubleClickToFullscreen
           clickToPlay

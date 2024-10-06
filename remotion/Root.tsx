@@ -1,20 +1,33 @@
+import { z } from "zod";
 import { Composition } from "remotion";
-import { COMP_NAME, DURATION_IN_FRAMES, VIDEO_FPS, VIDEO_HEIGHT, VIDEO_WIDTH } from "../types/constants";
 
-import CompositionProps from "./sample.json" assert { type: "json" };
 import { JsonComposition } from "./components/metadata/Composition";
+import { CompositionProps } from "./components/metadata/Composition/constants";
+
+import ProjectData from "../public/project.json" assert { type: "json" };
+
+const getMetadataFromJson = (): z.infer<typeof CompositionProps> => {
+  const data = CompositionProps.safeParse(ProjectData);
+  if (data.success) {
+    return data.data;
+  }
+
+  throw new Error(`Invalid Project: \n${JSON.stringify(data.error.format(), null, 2)}`);
+};
 
 export const RemotionRoot: React.FC = () => {
+  const json = getMetadataFromJson();
+
   return (
     <>
       <Composition
-        id={COMP_NAME}
+        id={json.metadata.title}
         component={JsonComposition}
-        durationInFrames={DURATION_IN_FRAMES}
-        fps={VIDEO_FPS}
-        width={VIDEO_WIDTH}
-        height={VIDEO_HEIGHT}
-        defaultProps={CompositionProps as any}
+        durationInFrames={json.metadata.length}
+        fps={json.metadata.rendering.framerate}
+        width={json.metadata.rendering.width}
+        height={json.metadata.rendering.height}
+        defaultProps={json}
       />
     </>
   );

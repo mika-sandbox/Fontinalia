@@ -4,9 +4,10 @@ import { cn } from "../../../utils";
 type MenuItemProps = {
   name: string;
   disabled?: boolean;
+  onClick?: () => void;
 };
 
-const MenuItem = ({ name, disabled }: MenuItemProps) => {
+const MenuItem = ({ name, disabled, onClick }: MenuItemProps) => {
   return (
     <MB.Item
       className={cn(
@@ -14,6 +15,7 @@ const MenuItem = ({ name, disabled }: MenuItemProps) => {
         "data-[highlighted]:bg-neutral-800 data-[highlighted]:text-neutral-100",
       )}
       disabled={disabled}
+      onClick={onClick}
     >
       {name}
     </MB.Item>

@@ -19,6 +19,7 @@ import { TimelineAtom } from "../states/timeline";
 import { TimelineController } from "./Timeline/TimelineController";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { Menubar } from "./Window/Menubar";
+import CompositionProps from "../../public/project.json";
 
 // +-------------+-------------------------------+------------+
 // |             |                               |            |
@@ -99,7 +100,8 @@ const App = () => {
   );
 
   useEffect(() => {
-    setTimeline(new TimelineController());
+    const timeline = TimelineController.fromJSON(CompositionProps as any);
+    setTimeline(timeline);
   }, []);
 
   useEffect(() => {
