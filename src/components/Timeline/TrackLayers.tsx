@@ -7,7 +7,7 @@ import { Measure } from "./Measure";
 import { ScrollContainer } from "../ScrollerContainer";
 import { useAtomValue } from "jotai";
 import { RemotionAtom } from "../../states/remotion";
-
+import { useWindowSize } from "../../hooks/useWindowSize";
 type Props = {
   timeline: TimelineController;
 };
@@ -16,8 +16,10 @@ export const TrackLayers: React.FC<Props> = ({ timeline }) => {
   const ref = useRef<HTMLDivElement>(null);
   const header = useRef<HTMLDivElement>(null);
   const translate = useRef(0);
+  const [offset, setOffset] = useState(0);
   const [scale, setScale] = useState(2);
   const player = useAtomValue(RemotionAtom);
+  const size = useWindowSize();
 
   const onMouseWheel = useCallback((e: React.WheelEvent) => {
     e.preventDefault();
@@ -37,7 +39,8 @@ export const TrackLayers: React.FC<Props> = ({ timeline }) => {
 
       if (ref.current) {
         translate.current = scrollX;
-        ref.current.style.transform = `translateX(-${scrollX}px)`;
+        setOffset(scrollX);
+        //  ref.current.style.transform = `translateX(-${scrollX}px)`;
       }
     },
     [timeline],
@@ -73,8 +76,9 @@ export const TrackLayers: React.FC<Props> = ({ timeline }) => {
   }, [player, scale]);
 
   const frames = 1800; // 30s
-  const fps = 60;
-  const pixel = useMemo(() => frame2pixel(timeline.totalFrames, scale) + 100, [scale, timeline.totalFrames]);
+  const fps = 30;
+  const pixel = useMemo(() => Math.max(frame2pixel(timeline.totalFrames, scale) + 100), [scale, timeline.totalFrames]);
+  const canvas = useMemo(() => Math.min(pixel, size.width), [frames, scale, size.width]);
 
   return (
     <ScrollSync>
@@ -110,9 +114,9 @@ export const TrackLayers: React.FC<Props> = ({ timeline }) => {
         <div
           ref={ref}
           className="absolute top-0 bottom-0 col-start-2 pointer-events-none"
-          style={{ width: `${pixel}px`, transform: `translateX(-)` }}
+          style={{ width: `${canvas}px` }}
         >
-          {ref.current && <Measure scale={scale} height={ref.current.clientHeight} width={pixel} />}
+          {ref.current && <Measure scale={scale} height={ref.current.clientHeight} width={canvas} offset={offset} />}
         </div>
       </div>
     </ScrollSync>

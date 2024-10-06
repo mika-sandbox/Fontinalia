@@ -9,17 +9,18 @@ type RulerProps = {
   scale: number;
   height: number;
   width: number;
+  offset: number;
 };
 
-const MeasureRuler = memo(({ scale, width, height }: RulerProps) => {
+const MeasureRuler = memo(({ scale, width, height, offset }: RulerProps) => {
   const ref = useRef<HTMLCanvasElement>(null);
-  const drawFrameLineFn = useRef(drawFrameLine(scale));
+  const drawFrameLineFn = useRef(drawFrameLine(scale, offset));
   const timeline = useAtomValue(TimelineAtom);
   const controller = useAtomValue(RemotionAtom);
 
   useEffect(() => {
-    drawFrameLineFn.current = drawFrameLine(scale);
-  }, [scale]);
+    drawFrameLineFn.current = drawFrameLine(scale, offset);
+  }, [scale, offset]);
 
   useEffect(() => {
     const ctx = ref.current?.getContext("2d");
@@ -28,6 +29,7 @@ const MeasureRuler = memo(({ scale, width, height }: RulerProps) => {
     }
   }, [
     scale,
+    offset,
     // no directly dependent but should re-rendering
     width,
     height,
