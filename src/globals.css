@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  @apply text-white;
+  @apply bg-neutral-900;
+}
+
+.dockview-theme-abyss  {
+  --dv-separator-border: #171717;
+}
+
+.split-view-container.separator-border .view:not(:first-child)::before {
+  z-index: 1;
+}
+
+.cet-title {
+  font-size: 16px !important;
+  @apply pt-2;
+}
+
+@layer components {
+  .scroll-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scroll-none::-webkit-scrollbar {
+    display: none;
+  }
+}

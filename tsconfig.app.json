@@ -20,5 +20,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "remotion"]
+  "include": [
+    //
+    "src/renderer.tsx",
+    "src/renderer/**/*",
+    "src/remotion"
+  ]
 }

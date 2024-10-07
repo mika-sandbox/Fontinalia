@@ -1,9 +1,17 @@
 {
-  "name": "skia",
-  "version": "0.1.0",
-  "private": true,
-  "author": {
-    "name": "Natsune Mochizuki"
+  "name": "electron-vite-react-app",
+  "productName": "electron-vite-react-app",
+  "version": "1.0.0",
+  "description": "My Electron application description",
+  "main": ".vite/build/main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "eslint .",
+    "remotion": "remotion studio",
+    "render": "remotion render"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
@@ -29,9 +37,10 @@
     "@remotion/shapes": "4.0.216",
     "@remotion/tailwind": "4.0.216",
     "@remotion/transitions": "4.0.216",
-    "@vitejs/plugin-react": "^4.3.1",
-    "clsx": "^2.1.0",
+    "clsx": "^2.1.1",
+    "custom-electron-titlebar": "^4.2.8",
     "dockview": "^1.17.1",
+    "electron-squirrel-startup": "^1.0.1",
     "jotai": "^2.9.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -39,34 +48,41 @@
     "react-scroll-sync": "^0.11.2",
     "react-window": "^1.8.10",
     "remotion": "4.0.216",
+    "scheduler": "^0.23.2",
     "tailwind-merge": "^2.2.2",
     "zod": "3.22.3"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^7.5.0",
+    "@electron-forge/maker-deb": "^7.5.0",
+    "@electron-forge/maker-rpm": "^7.5.0",
+    "@electron-forge/maker-squirrel": "^7.5.0",
+    "@electron-forge/maker-zip": "^7.5.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.5.0",
+    "@electron-forge/plugin-fuses": "^7.5.0",
+    "@electron-forge/plugin-vite": "^7.5.0",
+    "@electron/fuses": "^1.8.0",
     "@remotion/eslint-config": "4.0.216",
-    "@tauri-apps/cli": "^1.6.1",
     "@types/node": "18.7.23",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",
     "@types/react-scroll-sync": "^0.9.0",
     "@types/web": "^0.0.143",
+    "@vitejs/plugin-react": "^4.3.2",
     "autoprefixer": "^10.4.18",
     "dotenv": "^16.0.3",
+    "electron": "32.1.2",
     "eslint": "^8.43.0",
     "postcss": "^8.4.36",
     "prettier": "^3.2.5",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.4.5",
-    "vite": "^5.4.4"
+    "vite": "^5.4.8"
   },
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview",
-    "lint": "eslint .",
-    "remotion": "remotion studio",
-    "render": "remotion render",
-    "deploy": "node deploy.mjs",
-    "tauri": "tauri"
-  }
+  "keywords": [],
+  "author": {
+    "name": "MOCHIZUKI Natsune",
+    "email": "me@natsuneko.cat"
+  },
+  "license": "MIT"
 }
