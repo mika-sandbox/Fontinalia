@@ -4,6 +4,7 @@
     "lib": ["ES2023"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "baseUrl": "./",
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -16,12 +17,21 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "paths": {
+      "@fontinalia-constants/*": ["src/constants/*"],
+      "@fontinalia-main/*": ["src/main/*"],
+      "@fontinalia-remotion/*": ["src/remotion/*"],
+      "@fontinalia-shared/*": ["src/shared/*"],
+      "@fontinalia-schema/*": ["src/schema/*"]
+    }
   },
   "include": [
     //
     "src/main.ts",
     "src/main/**/*",
+    "src/shared/**/*",
     "vite.main.config.ts",
     "vite.preload.config.ts",
     "vite.renderer.config.ts",
