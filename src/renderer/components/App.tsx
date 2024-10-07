@@ -9,16 +9,15 @@ import {
   SerializedGridviewComponent,
 } from "dockview";
 import { useSetAtom } from "jotai";
+import { DEFAULT_PROJECT } from "@fontinalia-constants/project";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { TimelineAtom } from "../state/timeline";
-
-import "dockview/dist/styles/dockview.css";
-import { DEFAULT_PROJECT } from "../../constants/project";
-import { TimelineController } from "./Timeline/controller";
+import { CompositionAtom } from "../state/composition";
 import { Player } from "./Player";
 import { Timeline } from "./Timeline";
-import { height } from "@fortawesome/pro-solid-svg-icons/faBackwardFast";
+
+import "dockview/dist/styles/dockview.css";
+import { Composition } from "@fontinalia-shared/timeline";
 
 // +-------------+-------------------------------+------------+
 // |             |                               |            |
@@ -34,7 +33,7 @@ import { height } from "@fortawesome/pro-solid-svg-icons/faBackwardFast";
 export const App = () => {
   const { value: layout, set } = useLocalStorage<SerializedGridviewComponent>("layout");
   const api = useRef<GridviewApi>();
-  const setTimeline = useSetAtom(TimelineAtom);
+  const setTimeline = useSetAtom(CompositionAtom);
 
   const onReady = useCallback(
     (e: GridviewReadyEvent) => {
@@ -66,7 +65,7 @@ export const App = () => {
           priority: LayoutPriority.Low,
         });
 
-        const player = e.api.addPanel({
+        e.api.addPanel({
           id: "player",
           component: "player",
           params: {
@@ -99,7 +98,7 @@ export const App = () => {
   );
 
   useEffect(() => {
-    const timeline = TimelineController.fromJSON(DEFAULT_PROJECT);
+    const timeline = Composition.fromJSONProject(DEFAULT_PROJECT);
     setTimeline(timeline);
   }, []);
 

@@ -2,7 +2,7 @@ import { useAtomValue } from "jotai";
 import { memo, useEffect, useRef } from "react";
 import { drawFrameLine } from "./service";
 import { CallbackListener } from "@remotion/player";
-import { TimelineAtom } from "../../../state/timeline";
+import { CompositionAtom } from "../../../state/composition";
 import { RemotionAtom } from "../../../state/remotion";
 
 type RulerProps = {
@@ -15,7 +15,7 @@ type RulerProps = {
 const MeasureRuler = memo(({ scale, width, height, offset }: RulerProps) => {
   const ref = useRef<HTMLCanvasElement>(null);
   const drawFrameLineFn = useRef(drawFrameLine(scale, offset));
-  const timeline = useAtomValue(TimelineAtom);
+  const composition = useAtomValue(CompositionAtom);
   const controller = useAtomValue(RemotionAtom);
 
   useEffect(() => {
@@ -24,8 +24,8 @@ const MeasureRuler = memo(({ scale, width, height, offset }: RulerProps) => {
 
   useEffect(() => {
     const ctx = ref.current?.getContext("2d");
-    if (ctx && controller && timeline) {
-      drawFrameLineFn.current(ctx, timeline.totalFrames, controller.getCurrentFrame());
+    if (ctx && controller && composition) {
+      drawFrameLineFn.current(ctx, composition.totalFrames, controller.getCurrentFrame());
     }
   }, [
     scale,
@@ -38,10 +38,10 @@ const MeasureRuler = memo(({ scale, width, height, offset }: RulerProps) => {
   useEffect(() => {
     const ctx = ref.current?.getContext("2d");
 
-    if (ctx && controller && timeline) {
+    if (ctx && controller && composition) {
       const onFrameUpdate: CallbackListener<"frameupdate"> = (e) => {
         const { frame } = e.detail;
-        drawFrameLineFn.current(ctx, timeline.totalFrames, frame);
+        drawFrameLineFn.current(ctx, composition.totalFrames, frame);
       };
 
       controller.addEventListener("frameupdate", onFrameUpdate);
@@ -50,7 +50,7 @@ const MeasureRuler = memo(({ scale, width, height, offset }: RulerProps) => {
         controller.removeEventListener("frameupdate", onFrameUpdate);
       };
     }
-  }, [controller]);
+  }, [controller, composition?.totalFrames]);
 
   return <canvas ref={ref} width={width} height={height} className="w-full h-full" />;
 });

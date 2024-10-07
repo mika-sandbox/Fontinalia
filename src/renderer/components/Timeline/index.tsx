@@ -3,7 +3,7 @@ import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
 import { ScrollContainer } from "../ScrollerContainer";
 import { useAtomValue } from "jotai";
 import { RemotionAtom } from "../../state/remotion";
-import { TimelineAtom } from "../../state/timeline";
+import { CompositionAtom } from "../../state/composition";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { frame2pixel, position2frame } from "./Ruler/service";
 import { Measure } from "./Ruler";
@@ -16,7 +16,7 @@ export const Timeline: React.FC = () => {
   const [offset, setOffset] = useState(0);
   const [scale, setScale] = useState(2);
   const player = useAtomValue(RemotionAtom);
-  const timeline = useAtomValue(TimelineAtom);
+  const composition = useAtomValue(CompositionAtom);
   const size = useWindowSize();
 
   const onMouseWheel = useCallback((e: React.WheelEvent) => {
@@ -41,7 +41,7 @@ export const Timeline: React.FC = () => {
         //  ref.current.style.transform = `translateX(-${scrollX}px)`;
       }
     },
-    [timeline],
+    [composition],
   );
 
   useEffect(() => {
@@ -73,15 +73,18 @@ export const Timeline: React.FC = () => {
     }
   }, [player, scale]);
 
-  if (!timeline) {
+  if (!composition) {
     // invalid state
     return null;
   }
 
   const frames = 1800; // 30s
   const fps = 30;
-  const pixel = useMemo(() => Math.max(frame2pixel(timeline?.totalFrames, scale) + 100), [scale, timeline.totalFrames]);
-  const canvas = useMemo(() => Math.min(pixel, size.width), [frames, scale, size.width]);
+  const pixel = useMemo(
+    () => Math.max(frame2pixel(composition?.totalFrames, scale) + 100),
+    [scale, composition.totalFrames],
+  );
+  const canvas = useMemo(() => Math.min(pixel, size.width), [composition.totalFrames, scale, size.width]);
 
   return (
     <div className="h-full">
@@ -91,7 +94,7 @@ export const Timeline: React.FC = () => {
           <div ref={header} onWheel={onMouseWheel} />
           <ScrollSyncPane>
             <div className="relative z-10 w-full h-auto bg-neutral-900 overflow-auto scroll-none">
-              {timeline.layers.map((layer) => (
+              {composition.layers.map((layer) => (
                 <div
                   key={layer.name}
                   className="flex items-center justify-center w-40 h-16 border-b border-r-2 border-neutral-700 select-none"
@@ -107,7 +110,7 @@ export const Timeline: React.FC = () => {
                 className="relative w-full h-auto overflow-x-scroll bg-neutral-900 scroll-none"
                 style={{ minWidth: `${pixel}px` }}
               >
-                {timeline.layers.map((layer, i) => (
+                {composition.layers.map((layer, i) => (
                   <div key={layer.name} className="h-16 border-b border-neutral-700 select-none">
                     <Layer layer={layer} frames={frames} fps={fps} key={layer.name} className="h-16" />
                   </div>

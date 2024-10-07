@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CompositionProps } from "../remotion/components/metadata/Composition/schema";
+import { CompositionProps } from "@fontinalia-remotion/components/metadata/Composition/schema";
 
 export const HOUR = 60 * 60;
 export const MINUTE = 60;
@@ -19,4 +19,5 @@ export const DEFAULT_PROJECT: z.infer<typeof CompositionProps> = {
   composition: {
     layers: [],
   },
+  resources: [],
 };

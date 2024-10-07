@@ -10,3 +10,14 @@ export const AudioReferenceProps = z.object({
     length: z.number().min(0),
   }),
 });
+
+export const AudioResourceProps = z.object({
+  id: z.string(),
+  type: z.literal("resources/audio"),
+  path: z.string(),
+  metadata: z.object({
+    duration: z.number().min(0),
+  }),
+});
+
+export type AudioReferenceSchema = z.infer<typeof AudioReferenceProps>;

@@ -29,6 +29,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
+import "./renderer/handlers";
 import "./globals.css";
 import { App } from "./renderer/components/App";
 

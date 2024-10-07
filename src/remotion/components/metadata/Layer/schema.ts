@@ -7,3 +7,5 @@ export const LayerProps = z.object({
   name: z.string().default("Layer"),
   items: z.array(z.union([AudioReferenceProps, ImageReferenceProps, VideoReferenceProps])),
 });
+
+export type LayerSchema = z.infer<typeof LayerProps>;

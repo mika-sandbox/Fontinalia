@@ -22,3 +22,5 @@ export const ImageReferenceProps = z.object({
     scale: z.number().default(1),
   }),
 });
+
+export type ImageReferenceSchema = z.infer<typeof ImageReferenceProps>;

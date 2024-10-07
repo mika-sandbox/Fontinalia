@@ -1,11 +1,12 @@
 import { Menu, MenuItemConstructorOptions } from "electron";
+import { openProjectHandler } from "./handlers/open-project";
 
 const template: MenuItemConstructorOptions[] = [
   {
     role: "fileMenu",
     submenu: [
       { label: "New Project" },
-      { label: "Open Project" },
+      { label: "Open Project", click: openProjectHandler },
       { label: "Open Recent Project" },
       { label: "Close Project", enabled: false },
       { type: "separator" },
