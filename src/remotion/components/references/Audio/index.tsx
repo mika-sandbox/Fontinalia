@@ -1,12 +1,15 @@
 import { z } from "zod";
-import { staticFile, Audio, Sequence } from "remotion";
+import { Audio, Sequence } from "remotion";
 import { AudioReferenceProps } from "./schema";
 import { memo } from "react";
+import { useServe } from "@fontinalia-remotion/hooks/useServe";
 
 const AudioReference = memo((props: z.infer<typeof AudioReferenceProps>) => {
+  const { serve } = useServe();
+
   return (
     <Sequence from={props.start} durationInFrames={props.length}>
-      <Audio src={staticFile(props.path)} />
+      <Audio src={serve(props.path)} />
     </Sequence>
   );
 });

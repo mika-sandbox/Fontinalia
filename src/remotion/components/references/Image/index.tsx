@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { staticFile, Sequence, Img } from "remotion";
+import { Sequence, Img } from "remotion";
 import { ImageReferenceProps } from "./schema";
 import { memo } from "react";
 import { classnames } from "../../../../renderer/lib/classnames";
+import { useServe } from "@fontinalia-remotion/hooks/useServe";
 
 type Props = z.infer<typeof ImageReferenceProps>;
 
@@ -29,13 +30,14 @@ const getYPosition = (opts: Props["metadata"]["position"]["y"]): { [x: string]: 
 };
 
 const ImageReference = memo((props: Props) => {
+  const { serve } = useServe();
   const position = props.metadata.position;
   const scale = props.metadata.scale;
   return (
     <Sequence from={props.start} durationInFrames={props.length}>
       <div>
         <Img
-          src={staticFile(props.path)}
+          src={serve(props.path)}
           style={{
             ...getXPosition(position.x),
             ...getYPosition(position.y),

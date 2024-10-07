@@ -3,6 +3,7 @@ import { Composition } from "remotion";
 
 import { JsonComposition } from "./components/metadata/Composition";
 import { CompositionProps } from "./components/metadata/Composition/schema";
+import { CompositionContext } from "./context";
 
 const getMetadataFromJson = (): z.infer<typeof CompositionProps> => {
   const data = CompositionProps.safeParse({});
@@ -17,7 +18,7 @@ export const RemotionRoot: React.FC = () => {
   const json = getMetadataFromJson();
 
   return (
-    <>
+    <CompositionContext.Provider value={{ port: 9271 }}>
       <Composition
         id={json.metadata.title}
         component={JsonComposition}
@@ -27,6 +28,6 @@ export const RemotionRoot: React.FC = () => {
         height={json.metadata.rendering.height}
         defaultProps={json}
       />
-    </>
+    </CompositionContext.Provider>
   );
 };

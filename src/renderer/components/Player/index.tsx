@@ -7,6 +7,7 @@ import { RemotionAtom } from "../../state/remotion";
 import { TimelineAtom } from "../../state/timeline";
 import { DEFAULT_PROJECT } from "../../../constants/project";
 import { JsonComposition } from "../../../remotion/components/metadata/Composition";
+import { CompositionContext } from "@fontinalia-remotion/context";
 
 const Player: React.FC = () => {
   const ref = useRef<PlayerRef>(null);
@@ -28,6 +29,7 @@ const Player: React.FC = () => {
   return (
     <div className="h-full flex flex-col">
       <div className="h-full w-full">
+          <CompositionContext.Provider value={{ port: 9271 }}>
         <RemotionPlayer
           ref={ref}
           component={JsonComposition}
@@ -41,6 +43,7 @@ const Player: React.FC = () => {
           clickToPlay
           loop={isRepeating}
         />
+          </CompositionContext.Provider>
       </div>
       <Controller onToggleRepeat={onToggleRepeat} />
     </div>
